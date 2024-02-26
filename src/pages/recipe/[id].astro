@@ -1,0 +1,17 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import Recipe from "../../components/Recipe.astro"
+
+const { id } = Astro.params
+---
+
+<Layout title="Brownbag">
+  <section class="py-24 text-center text-[#5f574e]">
+    <div class="inline-block max-w-[768px]">
+      <div class="mb-4 w-full text-left">
+        <a href="/" class="font-bold"><span class="mr-3">←</span>Go back</a>
+      </div>
+      <Recipe id={id} />
+    </div>
+  </section>
+</Layout>

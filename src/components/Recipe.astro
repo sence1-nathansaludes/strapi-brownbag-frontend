@@ -1,0 +1,101 @@
+---
+import { marked } from "marked"
+
+// access component props
+const { id } = Astro.props
+
+let data = null
+let error_message = null
+
+try {
+  const response = await fetch(`https://strapi-brownbag-production.up.railway.app/api/recipes/${id}?populate=*`)
+  const res_json = await response.json()
+
+  if (res_json.error) {
+    error_message =
+      res_json.error.name === "NotFoundError" ? "Recipe not found." : "There's something wrong in the server."
+  } else {
+    data = res_json.data
+  }
+} catch (error) {
+  console.log(error)
+}
+---
+
+{
+  !error_message && data ? (
+    <div class="max-w-[736px] rounded-[30px] bg-white p-10 text-left shadow-lg">
+      {data.attributes.image.data.attributes.url ? (
+        <img
+          src={`https://strapi-brownbag-production.up.railway.app/${data.attributes.image.data.attributes.url}`}
+          alt={data.attributes.name}
+          class="h-[300px] w-full rounded-[10px] bg-gray-100 object-cover"
+        />
+      ) : (
+        <img
+          src={`https://strapi-brownbag-production.up.railway.app/${data.attributes.image.data.attributes.url}`}
+          alt={data.attributes.name}
+          class="h-[300px] w-full rounded-[10px] bg-gray-100 object-cover"
+        />
+      )}
+
+      {/* title */}
+      <h1 class="my-2 font-serif text-[42px]">{data.attributes.name}</h1>
+      {/* description */}
+      <p class="mb-6">{data.attributes.description}</p>
+      {/* preparation */}
+      <div class="mb-6 rounded-[10px] bg-[#FFF7FC] p-[22px] leading-[1.8]">
+        <h3 class="mb-1 text-lg font-bold text-[#7b284f]">Preparation time</h3>
+        <ul>
+          <li>
+            <span class="mr-1 font-bold">Total:</span> Approximately {data.attributes.preparation_time_total} minutes
+          </li>
+          <li>
+            <span class="mr-1 font-bold">Preparation:</span> {data.attributes.preparation_time} minutes
+          </li>
+          <li>
+            <span class="mr-1 font-bold">Cooking:</span> {data.attributes.preparation_time_cooking} minutes
+          </li>
+        </ul>
+      </div>
+      {/* ingredients */}
+      <div class="mb-6 border-b pb-6">
+        <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Ingredients</h2>
+        <div set:html={marked.parse(data.attributes.ingredients)} />
+      </div>
+      {/* instructions */}
+      <div class="mb-6 border-b pb-6">
+        <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Instructions</h2>
+        <div set:html={marked.parse(data.attributes.instructions)} />
+      </div>
+      {/* nutrition */}
+      <div>
+        <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Nutrition</h2>
+        <p class="mb-2">The table below shows nutritional values per serving without the additional fillings.</p>
+        <table class="w-full table-auto">
+          <tbody>
+            <tr class="border-b">
+              <td class="px-7 py-2 font-[500]">Calories</td>
+              <td class="px-7 py-2 font-bold text-[#854632]">{data.attributes.calories}kcal</td>
+            </tr>
+            <tr class="border-b">
+              <td class="px-7 py-2 font-[500]">Carbs</td>
+              <td class="px-7 py-2 font-bold text-[#854632]">{data.attributes.carbs}g</td>
+            </tr>
+            <tr class="border-b">
+              <td class="px-7 py-2 font-[500]">Protein</td>
+              <td class="px-7 py-2 font-bold text-[#854632]">{data.attributes.protein}g</td>
+            </tr>
+            <tr class="">
+              <td class="px-7 py-2 font-[500]">Fat</td>
+              <td class="px-7 py-2 font-bold text-[#854632]">{data.attributes.fat}g</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  ) : null
+}
+
+<!-- print errors -->
+{error_message}

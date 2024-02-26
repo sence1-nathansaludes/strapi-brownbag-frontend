@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro"
+
+let data = []
+let error_message = null
+
+try {
+  const response = await fetch("https://strapi-brownbag-production.up.railway.app/api/recipes")
+  const res_json = await response.json()
+
+  if (res_json.error) {
+    error_message =
+      res_json.error.name === "NotFoundError" ? "Unable to retrieve recipes." : "There's something wrong in the server."
+  } else {
+    data = res_json.data
+  }
+} catch (error) {
+  console.log(error)
+}
+---
+
+<Layout title="Strapi Demo">
+  <section class="flex justify-center">
+    <div class="w-full max-w-[768px] py-20">
+      <h1 class="mb-5 w-full font-serif text-3xl font-semibold">My Recipes</h1>
+      {
+        !error_message && data ? (
+          data.length > 0 ?
+          (<ul class="m-0 w-full list-none">
+            {data.map((recipe: any) => (
+              <li class="font-serif text-2xl font-normal hover:opacity-60">
+                <a href={`/recipe/${recipe.id}`}>{recipe.attributes.name}</a>
+              </li>
+            ))}
+          </ul>)
+          :
+          (<div>No recipes</div>)
+        ) : (
+          <div>{error_message}</div>
+        )
+      }
+    </div>
+  </section>
+</Layout>
