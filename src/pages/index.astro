@@ -5,7 +5,7 @@ let data = []
 let error_message = null
 
 try {
-  const response = await fetch(`${import.meta.env.STRAPI_BASE_URL}/api/recipes`)
+  const response = await fetch(`${import.meta.env.STRAPI_BASE_URL}/api/recipes?sort=id:desc`)
   const res_json = await response.json()
 
   if (res_json.error) {
