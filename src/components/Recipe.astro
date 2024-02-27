@@ -31,14 +31,10 @@ export const prerender = false
         <img
           src={`${import.meta.env.STRAPI_BASE_URL}${data.attributes.image.data.attributes.url}`}
           alt={data.attributes.name}
-          class="h-[300px] w-full rounded-[10px] bg-gray-100 object-cover"
+          class="mb-5 h-[300px] w-full rounded-[10px] bg-gray-100 object-cover"
         />
       ) : (
-        <img
-          src={`${import.meta.env.STRAPI_BASE_URL}${data.attributes.image.data.attributes.url}`}
-          alt={data.attributes.name}
-          class="h-[300px] w-full rounded-[10px] bg-gray-100 object-cover"
-        />
+        <div class="block h-[300px] w-full animate-pulse rounded-[10px] bg-gray-100 object-cover" />
       )}
 
       {/* title */}
