@@ -30,7 +30,7 @@ export const prerender = false
           data.length > 0 ? (
             <ul class="m-0 w-full list-none">
               {data.map((recipe: any) => (
-                <li class="font-serif text-2xl font-normal text-amber-800 hover:opacity-60">
+                <li class="truncate font-serif text-2xl font-normal text-amber-900/80 hover:text-amber-900">
                   <a href={`/recipe/${recipe.id}`}>{recipe.attributes.name}</a>
                 </li>
               ))}
