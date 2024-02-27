@@ -39,8 +39,10 @@ export const prerender = false
 
       {/* title */}
       <h1 class="mb-4 font-serif text-[42px] leading-snug">{data.attributes.name}</h1>
+
       {/* description */}
       <p class="mb-6">{data.attributes.description}</p>
+
       {/* preparation */}
       <div class="mb-6 rounded-[10px] bg-[#FFF7FC] p-[22px] leading-[1.8]">
         <h3 class="mb-1 text-lg font-bold text-[#7b284f]">Preparation time</h3>
@@ -56,16 +58,19 @@ export const prerender = false
           </li>
         </ul>
       </div>
+
       {/* ingredients */}
       <div class="mb-6 border-b pb-6">
         <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Ingredients</h2>
         <div set:html={marked.parse(data.attributes.ingredients)} />
       </div>
+
       {/* instructions */}
       <div class="mb-6 border-b pb-6">
         <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Instructions</h2>
         <div set:html={marked.parse(data.attributes.instructions)} />
       </div>
+
       {/* nutrition */}
       <div>
         <h2 class="mb-2 font-serif text-[27px] text-[#854632]">Nutrition</h2>
